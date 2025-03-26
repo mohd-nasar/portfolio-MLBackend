@@ -7,7 +7,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 # Load fine-tuned model
-MODEL_PATH = "nasar/pModel"
+MODEL_PATH = "nasar986/pModel"
 tokenizer = GPT2Tokenizer.from_pretrained(MODEL_PATH)
 model = GPT2LMHeadModel.from_pretrained("gpt2")  # Base GPT-2
 model = PeftModel.from_pretrained(model, MODEL_PATH)  # Load LoRA adapters
