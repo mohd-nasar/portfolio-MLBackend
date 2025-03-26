@@ -2,12 +2,21 @@ import onnxruntime as ort
 from transformers import AutoTokenizer
 from fastapi import FastAPI
 import numpy as np
+from huggingface_hub import hf_hub_download
 
 app = FastAPI()
 
 MODEL_NAME = "nasar986/pModel"
+ONNX_FILENAME = "model.onnx"  # Adjust if the file name is different
+
+# Download the ONNX model from Hugging Face
+onnx_model_path = hf_hub_download(repo_id=MODEL_NAME, filename=ONNX_FILENAME)
+
+# Load tokenizer
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-session = ort.InferenceSession(f"{MODEL_NAME}.onnx", providers=["CPUExecutionProvider"])
+
+# Load ONNX model
+session = ort.InferenceSession(onnx_model_path, providers=["CPUExecutionProvider"])
 
 @app.post("/generate")
 async def generate_response(payload: dict):
